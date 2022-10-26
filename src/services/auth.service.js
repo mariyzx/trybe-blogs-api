@@ -8,7 +8,7 @@ const { User } = require('../models');
 const validateBody = (params) => {
   // valida os dados
   const schema = Joi.object({
-    email: Joi.string().email().required(),
+    email: Joi.string().email().min(8).required(),
     password: Joi.string().required(),
   });
 
@@ -38,4 +38,25 @@ const validateLogin = async ({ email, password }) => {
   return { token };
 };
 
-module.exports = { validateBody, validateLogin };
+const validateUser = async (user) => {
+  const { email } = user;
+  // validar os inputs;
+  const schema = Joi.object({
+    displayName: Joi.string().min(8).required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(6).required(),
+  });
+
+  const { error } = schema.validate(user);
+  if (error) return { error: error.message };
+
+  // validar se o usuário já nao existe
+  const userExist = await User.findOne({ where: { email } });
+  if (userExist) return { error: 'User already registered' };
+
+  const token = jwtUtil.createToken(user);
+
+  return { token };
+};
+
+module.exports = { validateBody, validateLogin, validateUser };
