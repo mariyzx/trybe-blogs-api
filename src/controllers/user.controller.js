@@ -1,5 +1,4 @@
 const userService = require('../services/user.service');
-const authService = require('../services/auth.service');
 
 const createUser = async (req, res) => {
   const { error, token } = await userService.createUser(req.body);
@@ -10,13 +9,7 @@ const createUser = async (req, res) => {
   return res.status(201).json({ token: tk });
 };
 
-const getAllUsers = async (req, res) => {
-  const { authorization } = req.headers;
-  const { error, user } = await authService.validateToken(authorization);
-
-  if (error) return res.status(401).json({ message: 'Token not found' });
-  if (user.error) return res.status(401).json({ message: 'Expired or invalid token' });
-
+const getAllUsers = async (_req, res) => {
   const users = await userService.getAllUsers();
 
   return res.status(200).json(users);
