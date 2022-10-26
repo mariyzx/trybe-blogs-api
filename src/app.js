@@ -12,6 +12,8 @@ app.post('/user', userController.createUser);
 
 app.get('/user', validateAuth, userController.getAllUsers);
 
+app.get('/user/:id', validateAuth, userController.getUserById);
+
 // ...
 
 // É importante exportar a constante `app`,
