@@ -59,4 +59,14 @@ const validateUser = async (user) => {
   return { token };
 };
 
-module.exports = { validateBody, validateLogin, validateUser };
+const validateToken = async (token) => {
+  if (!token) {
+    return { error: 'Token obrigatório!' };
+  }
+
+  const user = await jwtUtil.validateToken(token);  
+
+  return { user };
+};
+
+module.exports = { validateBody, validateLogin, validateUser, validateToken };

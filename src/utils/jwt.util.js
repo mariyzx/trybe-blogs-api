@@ -10,4 +10,14 @@ const createToken = (data) => {
   return token;
 };
 
-module.exports = { createToken };
+const validateToken = (token) => {
+  try {
+    const { data } = jwt.verify(token, process.env.JWT_SECRET);
+
+    return { data };
+  } catch (error) {
+    return { error: 'Não válido' };
+  }
+};
+
+module.exports = { createToken, validateToken };
