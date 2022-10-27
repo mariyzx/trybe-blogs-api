@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     published: DataTypes.DATE,
     updated: DataTypes.DATE,
   }, {
-    tableName: 'categories',
+    tableName: 'blogPosts',
     underscored: true,
   });
 
