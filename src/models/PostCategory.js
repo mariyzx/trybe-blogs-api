@@ -2,6 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const PostCategory = sequelize.define('PostCategory', {
     postId: {
       primaryKey: true,
+      allowNull: false,
       type: DataTypes.INTEGER,
     },
     categoryId: {
@@ -9,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     }
   }, {
-    tableName: 'post_categories',
+    tableName: 'posts_categories',
     underscored: true,
     timestamps: false,
   });
