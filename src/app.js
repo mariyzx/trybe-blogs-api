@@ -31,6 +31,8 @@ app.get('/post/:id', validateAuth, postController.getPostById);
 
 app.put('/post/:id', validateAuth, postController.updatePostById);
 
+app.delete('/post/:id', validateAuth, postController.deletePostById);
+
 // ...
 
 // É importante exportar a constante `app`,

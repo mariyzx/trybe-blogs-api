@@ -53,7 +53,7 @@ const updatePostById = async (idPost, userInfo, postInfo) => {
   if (error) return { error: 'Some required fields are missing' };
 
   if (displayName !== userInfo) return { error: 'Unauthorized user' };
-  console.log(postInfo);
+
   await BlogPost.update(
     { title: postInfo.title, content: postInfo.content }, { where: { id: idPost } },
   );
@@ -63,4 +63,20 @@ const updatePostById = async (idPost, userInfo, postInfo) => {
   return { updatedPost };
 };
 
-module.exports = { createPost, getAllPosts, getPostById, updatePostById };
+const deletPostById = async (idPost, userInfo) => {
+  const post = await getPostById(idPost);
+  
+  if (!post) return { error: 'Post does not exist' };
+
+  const { user } = post;
+  const { dataValues: { displayName } } = user;
+
+  if (displayName !== userInfo) return { error: 'Unauthorized user' };
+
+  await PostCategory.destroy({ where: { postId: idPost } });
+  await BlogPost.destroy({ where: { id: idPost } });
+
+  return { message: 'Post deleted!' };
+};
+
+module.exports = { createPost, getAllPosts, getPostById, updatePostById, deletPostById };
