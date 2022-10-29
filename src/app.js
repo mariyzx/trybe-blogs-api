@@ -27,6 +27,7 @@ app.post('/post', validateAuth, postController.createPost);
 
 app.get('/post', validateAuth, postController.getAllPosts);
 
+app.get('/post/:id', validateAuth, postController.getPostById);
 // ...
 
 // É importante exportar a constante `app`,
