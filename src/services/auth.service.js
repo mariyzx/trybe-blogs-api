@@ -39,7 +39,6 @@ const validateLogin = async ({ email, password }) => {
 };
 
 const validateUser = async (user) => {
-  const { email } = user;
   // validar os inputs;
   const schema = Joi.object({
     displayName: Joi.string().min(8).required(),
@@ -49,10 +48,6 @@ const validateUser = async (user) => {
 
   const { error } = schema.validate(user);
   if (error) return { error: error.message };
-
-  // validar se o usuário já nao existe
-  const userExist = await User.findOne({ where: { email } });
-  if (userExist) return { error: 'User already registered' };
 
   const token = jwtUtil.createToken(user);
 

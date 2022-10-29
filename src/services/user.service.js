@@ -7,7 +7,10 @@ const createUser = async (user) => {
 
   if (error) return { error };
 
-  User.create(user);
+  const userExist = await User.findAll({ where: { email } });
+  if (userExist.length !== 0) return { error: 'User already registered' };
+  
+  await User.create(user);
   return { token };
 };
 
