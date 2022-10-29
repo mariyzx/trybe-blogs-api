@@ -1,5 +1,5 @@
 const { BlogPost, Category, User, PostCategory } = require('../models');
-const { validatePost } = require('./auth.service');
+const { validatePost, validatePostById } = require('./auth.service');
 
 const createPost = async ({ title, content, categoryIds }, { email }) => {
   const error = await validatePost({ title, content, categoryIds });
@@ -44,4 +44,23 @@ const getPostById = async (id) => {
   return post;
 };
 
-module.exports = { createPost, getAllPosts, getPostById };
+const updatePostById = async (idPost, userInfo, postInfo) => {
+  const post = await getPostById(idPost);
+  const { user } = post;
+  const { dataValues: { displayName } } = user;
+
+  const error = await validatePostById(postInfo);
+  if (error) return { error: 'Some required fields are missing' };
+
+  if (displayName !== userInfo) return { error: 'Unauthorized user' };
+  console.log(postInfo);
+  await BlogPost.update(
+    { title: postInfo.title, content: postInfo.content }, { where: { id: idPost } },
+  );
+
+  const updatedPost = await getPostById(idPost);
+
+  return { updatedPost };
+};
+
+module.exports = { createPost, getAllPosts, getPostById, updatePostById };

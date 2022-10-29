@@ -83,4 +83,24 @@ const validatePost = async (post) => {
   return null;
 };
 
-module.exports = { validateBody, validateLogin, validateUser, validateToken, validatePost };
+const validatePostById = async (post) => {
+  const schema = Joi.object({
+    title: Joi.string().min(1).required(),
+    content: Joi.string().min(1).required(),
+  });
+
+  const { error } = schema.validate(post);
+
+  if (error) return error;
+
+  return null;
+};
+
+module.exports = { 
+  validateBody,
+  validateLogin,
+  validateUser,
+  validateToken,
+  validatePost,
+  validatePostById, 
+};
